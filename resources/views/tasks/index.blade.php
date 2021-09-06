@@ -1,16 +1,12 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <ul>
-        @foreach($tasks as $task)
-            <li>{{ $task->body }}</li>
-        @endforeach
-    </ul>
-</body>
-</html>
+@extends('layout.master')
+
+@section('content')
+<div class="col-md-8 blog-main">
+    <h3 class="pb-3 mb-4 font-italic border-bottom">
+        Список задач
+    </h3>
+    @foreach($tasks as $task)
+        @include('tasks.item')
+    @endforeach
+</div>
+@endsection

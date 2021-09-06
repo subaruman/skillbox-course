@@ -1,12 +1,10 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<h1>{{ $task->body }}</h1>
-</body>
-</html>
+@include('layout.master')
+
+@section('content')
+    <div class="col-md-8 blog-main">
+        <h3 class="pb-3 mb-4 font-italic border-bottom">
+            {{ $task->title }}
+        </h3>
+    <hr>
+        <a href="/tasks/">Вернуться к списку задач</a>
+@endsection
