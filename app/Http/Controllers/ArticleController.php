@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
-class TaskController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('tasks.index', ["tasks" => Task::latest()->get()]);
+        return view('articles.index', [
+            'articles' => Article::latest()->get(),
+        ]);
     }
 
     /**
@@ -24,7 +26,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('tasks.create');
+        return view('articles.create');
     }
 
     /**
@@ -35,32 +37,38 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'body' => 'required',
+        $request->request->add([
+            'slug' => str_slug($request->title, '-')
         ]);
-        Task::create($request->except('_token'));
+        $this->validate($request, [
+            'slug' => ['required', 'unique:articles'],
+            'title' => ['required', 'min:5', 'max:100'],
+            'preview_text' => ['required', 'max:255'],
+            'detail_text' => ['required']
+        ]);
+        Article::create($request->except('_token'));
 
-        return view('tasks.index', ['tasks' => Task::get()]);
+        return view('articles.index', ['articles' => Article::latest()->get()]);
     }
 
     /**
      * Display the specified resource.
      *
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function show(Article $article)
     {
-        return view('tasks.show', ['task' => $task]);
+        return view('articles.show', ['article' => $article]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Task $task)
+    public function edit(Article $article)
     {
         //
     }
@@ -69,10 +77,10 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Article $article)
     {
         //
     }
@@ -80,10 +88,10 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy(Article $article)
     {
         //
     }
